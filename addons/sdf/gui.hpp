@@ -51,13 +51,13 @@ class GVAR(Text) : RscText {
 	h = 0;
 	colorBackground[] = {0,0,0,0.67};
 	colorDisabled[] = {COLOR_DISABLED};
-	sizeEx = GRID_H(1);
+	sizeEx = QUOTE(GRID_H(1));
 	shadow = 0;
 };
 
 class GVAR(StructuredText) : GVAR(Text) {
 	type = 13;
-	size = GRID_H(1);
+	size = QUOTE(GRID_H(1));
 };
 
 class GVAR(Checkbox) : RscCheckbox {
@@ -65,8 +65,8 @@ class GVAR(Checkbox) : RscCheckbox {
 	deletable = 1;
 	x = 0;
 	y = 0;
-	w = CHECKBOX_W;
-	h = CHECKBOX_H;
+	w = QUOTE(CHECKBOX_W);
+	h = QUOTE(CHECKBOX_H);
 	color[] = {1,1,1,1};
 	colorDisabled[] = {COLOR_DISABLED};
 };
@@ -76,9 +76,9 @@ class GVAR(Editbox) : RscEdit {
 	deletable = 1;
 	x = 0;
 	y = 0;
-	w = EDITBOX_W;
-	h = EDITBOX_H;
-	sizeEx = GRID_H(1);
+	w = QUOTE(EDITBOX_W);
+	h = QUOTE(EDITBOX_H);
+	sizeEx = QUOTE(GRID_H(1));
 	colorText[] = {1,1,1,1};
 	colorBackground[] = {0,0,0,1};
 	colorDisabled[] = {COLOR_DISABLED};
@@ -93,8 +93,8 @@ class GVAR(Slider) : RscXSliderH {
 	deletable = 1;
 	x = 0;
 	y = 0;
-	w = SLIDER_W;
-	h = SLIDER_H;
+	w = QUOTE(SLIDER_W);
+	h = QUOTE(SLIDER_H);
 	colorDisable[] = {COLOR_DISABLED};
 	colorDisabled[] = {COLOR_DISABLED};
 	colorBackground[] = {0,0,0,1};
@@ -102,7 +102,7 @@ class GVAR(Slider) : RscXSliderH {
 };
 
 class GVAR(SliderEdit) : GVAR(Editbox) {
-	w = SLIDER_EDIT_W;
+	w = QUOTE(SLIDER_EDIT_W);
 };
 
 class GVAR(Combobox) : RscCombo {
@@ -110,10 +110,10 @@ class GVAR(Combobox) : RscCombo {
 	deletable = 1;
 	x = 0;
 	y = 0;
-	w = COMBOBOX_W;
-	h = COMBOBOX_H;
+	w = QUOTE(COMBOBOX_W);
+	h = QUOTE(COMBOBOX_H);
 	colorDisabled[] = {COLOR_DISABLED};
-	sizeEx = GRID_H(1);
+	sizeEx = QUOTE(GRID_H(1));
 	wholeHeight = 0.3;
 };
 
@@ -122,14 +122,14 @@ class GVAR(ListNBox) : RscListNBox {
 	deletable = 1;
 	x = 0;
 	y = 0;
-	w = LISTNBOX_W;
-	h = LISTNBOX_H;
+	w = QUOTE(LISTNBOX_W);
+	h = QUOTE(LISTNBOX_H);
 	columns[] = {0,0.2,0.4,0.6,0.8};
-	rowHeight = GRID_H(1);
+	rowHeight = QUOTE(GRID_H(1));
 	colorDisabled[] = {COLOR_DISABLED};
-	sizeEx = GRID_H(1);
+	sizeEx = QUOTE(GRID_H(1));
 	disableOverflow = 0;
-	class ListScrollBar : ScrollBar {
+	class ListScrollBar : Scrollbar {
 		color[] = {1,1,1,1};
     };
 };
@@ -139,8 +139,8 @@ class GVAR(ButtonSimple) : RscButton {
 	deletable = 1;
 	x = 0;
 	y = 0;
-	w = BUTTON_W;
-	h = BUTTON_H;
+	w = QUOTE(BUTTON_W);
+	h = QUOTE(BUTTON_H);
 	color[] = {1,1,1,1};
 	colorBackground[] = {0,0,0,1};
 	colorBackgroundActive[] = {0.8,0.8,0.8,1};
@@ -148,7 +148,7 @@ class GVAR(ButtonSimple) : RscButton {
 	colorBackgroundDisabled[] = {0,0,0,1};
 	colorDisabled[] = {COLOR_DISABLED};
 	colorFocused[] = {0,0,0,1};
-	sizeEx = GRID_H(1);
+	sizeEx = QUOTE(GRID_H(1));
 	style = 2;
 	shadow = 0;
 };
@@ -158,12 +158,12 @@ class GVAR(Button) : RscButtonMenu {
 	deletable = 1;
 	x = 0;
 	y = 0;
-	w = BUTTON_W;
-	h = BUTTON_H;
+	w = QUOTE(BUTTON_W);
+	h = QUOTE(BUTTON_H);
 	colorBackground[] = {0,0,0,1};
 	colorBackgroundDisabled[] = {0,0,0,1};
 	colorDisabled[] = {COLOR_DISABLED};
-	sizeEx = GRID_H(1);
+	sizeEx = QUOTE(GRID_H(1));
 	style = 2;
 	shadow = 0;
 	class HitZone {
@@ -173,8 +173,8 @@ class GVAR(Button) : RscButtonMenu {
 		bottom = 0;
 	};
 	class TextPos {
-		left = GRID_W(0.165);
-		top = GRID_H(0.125);
+		left = QUOTE(GRID_W(0.165));
+		top = QUOTE(GRID_H(0.125));
 		right = 0;
 		bottom = 0;
 	};
@@ -192,11 +192,11 @@ class GVAR(Listbox) : RscListBox {
 	deletable = 1;
 	x = 0;
 	y = 0;
-	w = LISTNBOX_W;
-	h = LISTNBOX_H;
-	rowHeight = GRID_H(1);
+	w = QUOTE(LISTNBOX_W);
+	h = QUOTE(LISTNBOX_H);
+	rowHeight = QUOTE(GRID_H(1));
 	colorDisabled[] = {COLOR_DISABLED};
-	sizeEx = GRID_H(1);
+	sizeEx = QUOTE(GRID_H(1));
 };
 
 class GVAR(Tree) : RscTree {
@@ -205,15 +205,15 @@ class GVAR(Tree) : RscTree {
 	style = 0;
 	x = 0;
 	y = 0;
-	w = TREE_W;
-	h = TREE_W;
-	sizeEx = GRID_H(0.76);
+	w = QUOTE(TREE_W);
+	h = QUOTE(TREE_W);
+	sizeEx = QUOTE(GRID_H(0.76));
 	colorBackground[] = {0,0,0,0.9};
 	colorDisabled[] = {COLOR_DISABLED};
 	idcSearch = -1;
 	colorBorder[] = {0.7,0.7,0.7,1};
 	colorSearch[] =	{1,1,1,0};
-	rowHeight = GRID_H(0.76);
+	rowHeight = QUOTE(GRID_H(0.76));
 	borderSize = 1;
 };
 
@@ -226,11 +226,11 @@ class GVAR(ControlsGroup) : RscControlsGroup {
 	h = 1;
 	class VScrollbar : Scrollbar {
 		color[] = {1,1,1,1};
-		width = BUFFER_W * 2;
+		width = QUOTE(BUFFER_W * 2);
 	};
 	class HScrollbar : Scrollbar {
 		color[] = {1,1,1,1};
-		height = BUFFER_H * 2;
+		height = QUOTE(BUFFER_H * 2);
 	};
 };
 
@@ -246,18 +246,18 @@ class GVAR(ControlsGroupNoScrollbars) : GVAR(ControlsGroup) {
 };
 
 class GVAR(Dialog_Zeus) : GVAR(ControlsGroupNoScrollbars) {
-	x = safeZoneXAbs;
-	y = safeZoneY;
-	w = safeZoneWAbs;
-	h = safeZoneH;
+	x = "safeZoneXAbs";
+	y = "safeZoneY";
+	w = "safeZoneWAbs";
+	h = "safeZoneH";
 	onLoad = QUOTE(with uiNamespace do {GVAR(parent) = _this select 0});
 
 	class Controls {
 		class Container : GVAR(ControlsGroupNoScrollbars) {
 			x = 0;
 			y = 0;
-			w = safeZoneWAbs;
-			h = safeZoneH;
+			w = "safeZoneWAbs";
+			h = "safeZoneH";
 
 			class Controls {
 				LIST_DIALOG_CONTROLS;

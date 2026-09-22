@@ -15,7 +15,7 @@ class Cfg3DEN {
 			class Value;
 		};
 		class GVAR(OPForVehicleList): Combo {
-			control = GVAR(OPForVehicleList);
+			control = QGVAR(OPForVehicleList);
 			class Controls: Controls {
 				class Title: Title {};
 				class Value: Value {

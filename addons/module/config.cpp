@@ -4,8 +4,9 @@ class CfgPatches {
     class qrsf_module {
         name = QUOTE(COMPONENT);
         units[] = {
-            QGVAR(AddQRFS),
+            QGVAR(AddQRFS)
         };
+        requiredVersion = REQUIRED_VERSION;
         requiredAddons[] = {
             "A3_Modules_F",
 			"A3_Modules_F_Curator",

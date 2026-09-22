@@ -8,3 +8,6 @@ keys/*
 .idea
 hemtt.exe
 ####
+
+## HEMTT build output
+.hemttout
