@@ -42,28 +42,31 @@ class CfgVehicles {
 
 		class Attributes: AttributesBase {
 			class RequireSpotted: Default {
-				property = MVAR(requiredSpotted);
 				control = "Checkbox";
 				displayName = "Require Spotted";
 				tooltip = "Does someone inside the radius have to be spotted by the enemy before a QRF can be called in?";
 				defaultValue = "true";
 			};
 			class Classname: Default {
-				property = MVAR(classname);
-				control = GVAR(OPForVehicleList);
+				control = QGVAR(OPForVehicleList);
 				displayName = "Vehicle";
 				tooltip = "What Vehicle is used to transport the QRF";
 				defaultValue = """O_Heli_Transport_04_bench_F""";
 			};
+			class ClassnameOverride: Default {
+				control = "EditShort";
+				displayName = "Vehicle Override";
+				tooltip = "Classname to use instead of the Vehicle dropdown. Leave empty to use the dropdown.";
+				typeName = "STRING";
+				defaultValue = """""";
+			};
 			class Units: Default {
-				property = MVAR(units);
 				control = "EditMulti3";
 				displayName = "Units";
 				tooltip = "Classnames of the units that will be in each qrf";
 				defaultValue = "[""O_G_Soldier_SL_F"", ""O_G_medic_F"", ""O_G_Soldier_AR_F"", ""O_G_Soldier_M_F"", ""O_G_Soldier_LAT_F"", ""O_G_Soldier_A_F"", ""O_G_Soldier_F"", ""O_G_Soldier_F""]";
 			};
 			class TriggerTimeout: Default {
-				property = MVAR(triggerTimeout);
 				control = "Timeout";
 			    displayName = "Trigger Timeout";
 			    tooltip = "Time required for enemy units to be in the AO (in seconds)";
@@ -71,7 +74,6 @@ class CfgVehicles {
 			    defaultValue = "[60, 90, 120]";
 			};
 			class Origin: Default {
-				property = MVAR(origin);
 				control = "EditShort";
 				displayName = "Origin";
 				tooltip = "Where does the QRF come from in regards to the point, as a bearing? 'random' will do a random direction.";
@@ -79,7 +81,6 @@ class CfgVehicles {
 				defaultValue = """random""";
 			};
 			class Condition: Default {
-				property = MVAR(condition);
 				control = "EditCodeMulti5";
 				displayName = "Condition";
 				tooltip = "Condition for the qrf trigger to fire";
@@ -88,14 +89,12 @@ class CfgVehicles {
 				size = 5;
 			};
 			class SpawnDistance: Default {
-				property = MVAR(spawnDistance);
 				control = "DynSimDist";
 				displayName = "Spawn Distance";
 				tooltip = "How far away does the QRF spawn?";
 				defaultValue = "1500";
 			};
 			class DropoffDistance: Default {
-				property = MVAR(dropoffDistance);
 				control = "DynSimDist";
 				displayName = "Dropoff Distance";
 				tooltip = "How far away does the QRF land?";
@@ -120,7 +119,7 @@ class CfgVehicles {
 				optional = 1;
 				duplicate = 1;
 				synced[] = {};
-			}
-		}
+			};
+		};
 	};
 };

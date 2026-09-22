@@ -11,6 +11,7 @@
     	private _requireSpotted = _logic getVariable "requireSpotted";
     	private _classname = _logic getVariable "classname";
     	private _units = _logic getVariable "units";
+    	private _classnameOverride = _logic getVariable ["classnameOverride", ""];
     	private _size = _logic getVariable "objectarea";
     	private _triggerTimeout = _logic getVariable "triggertimeout";
     	private _origin = _logic getVariable "origin";
@@ -19,6 +20,14 @@
     	private _condition = _logic getVariable "condition";
     	private _triggerArea = _logic getVariable "objectarea";
     	_triggerTimeout = [(_triggerTimeout select 0), (_triggerTimeout select 1), (_triggerTimeout select 2), true];
+
+    	if (_classnameOverride != "") then {
+    		if (isClass (configFile >> "CfgVehicles" >> _classnameOverride)) then {
+    			_classname = _classnameOverride;
+    		} else {
+    			QRFS_ERROR_1("No such vehicle class: %1", _classnameOverride);
+    		};
+    	};
 
 		if (_requireSpotted) then {
 			private _area = [_position];
@@ -99,9 +108,8 @@
                 _unitClasses pushBack _class;
             };
             if (_class isKindOf "Helicopter" || _class isKindOf "Tank" || _class isKindOf "Car") then {
-				private _cfg = (configFile >> "CfgVehicles" >> _class);
-				private _num = count("if ( isText(_x >> 'proxyType') && { getText(_x >> 'proxyType') isEqualTo 'CPCargo' } ) then {true};"configClasses ( _cfg >> "Turrets" )) + getNumber ( _cfg >> "transportSoldier" );
-				if (num <= 0) then {continue};
+				private _num = [_class] call FUNC(cargoSeats);
+				if (_num <= 0) then {continue};
 
                 _vehClasses pushBack _class;
 				_numCargo pushBack _num;
@@ -119,6 +127,7 @@
 						_vehClasses find "O_Heli_Transport_04_bench_F"
 					]
 				],
+				["EDITBOX", "Vehicle Override", ""],
 				["EDITBOX", "Origin", "random"],
 				["SLIDER", "Distance", [[300, 2000, 100], 1500]],
 				["SLIDER", "Landing Distance", [[0, 1000, 10], 300]]
@@ -126,7 +135,24 @@
 			{
 				params ["_values", "_custom"];
 				_custom params ["_position", "_unitClasses", "_vehClasses", "_numCargo"];
-				_values params ["_classnameIndex", "_origin", "_spawnDistance", "_dropoffDistance"];
+				_values params ["_classnameIndex", "_override", "_origin", "_spawnDistance", "_dropoffDistance"];
+
+				private _classname = _vehClasses select _classnameIndex;
+				private _seats = _numCargo select _classnameIndex;
+				private _badOverride = false;
+
+				if (_override != "") then {
+					if (isClass (configFile >> "CfgVehicles" >> _override)) then {
+						_classname = _override;
+						_seats = [_override] call FUNC(cargoSeats);
+					} else {
+						private _msg = format ["No such vehicle class: %1", _override];
+						ZEUS_MESSAGE(_msg);
+						_badOverride = true;
+					};
+				};
+
+				if (_badOverride) exitWith {};
 
 				[
 					"Add QRF",
@@ -137,7 +163,7 @@
 							[
 								_unitClasses apply { [getText (configFile >> "CfgVehicles" >> _x >> "displayName"), _x]},
 								8,
-								_numCargo select _classnameIndex
+								_seats
 							]
 						]
 					],
@@ -149,7 +175,7 @@
 						[_position, _classname, _units, _origin, _spawnDistance, _dropoffDistance] call DFUNC(callInQRF);
 						ZEUS_MESSAGE("QRF Spawned");
 					},
-					[_position, _vehClasses select _classnameIndex, _origin, _spawnDistance, _dropoffDistance]
+					[_position, _classname, _origin, _spawnDistance, _dropoffDistance]
 				] call qrfs_sdf_fnc_dialog;
 			},
 			[_position, _unitClasses, _vehClasses, _numCargo]

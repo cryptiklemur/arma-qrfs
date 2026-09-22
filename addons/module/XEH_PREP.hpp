@@ -1,4 +1,5 @@
 PREP(callInQRF);
+PREP(cargoSeats);
 PREP(getBestPosition);
 PREP(getTargetPosition);
 PREP(getVehicles);
