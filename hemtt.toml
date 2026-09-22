@@ -9,5 +9,6 @@ exclude = ["bin"]
 modname = "{{prefix}}"
 files = [
     "mod.cpp",
-    "logo.paa"
+    "logo.paa",
+    "logo_small.paa"
 ]
