@@ -8,7 +8,7 @@ path = "addons/main/script_version.hpp"
 
 [files]
 include = ["mod.cpp", "logo.paa", "logo_small.paa"]
-exclude = ["bin/*", "RawAssets/*"]
+exclude = ["RawAssets/*"]
 
 [hemtt.release]
 sign = false
