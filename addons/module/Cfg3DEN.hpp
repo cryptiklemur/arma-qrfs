@@ -21,10 +21,16 @@ class Cfg3DEN {
 				class Value: Value {
 					h = "6 * (pixelH * pixelGrid * 	0.50)";
 					onload = "_control = _this select 0;\
-private _vehicles = [east, [""Helicopter"", ""Tank"", ""Car""], [""UAV""]] call qrfs_module_fnc_getVehicles;\
-diag_log format [""Vehicles: %1"", _vehicles];\
+private _vehicles = [];\
 {\
-	_lbadd = _control lbadd gettext (_x >> 'displayname');\
+	private _side = _x;\
+	private _label = [""OPFOR"", ""BLUFOR"", ""IND"", ""CIV""] select ([east, west, resistance, civilian] find _side);\
+	{ _vehicles pushBack [_x, _label] } forEach ([_side, [""Helicopter"", ""Tank"", ""Car""], [""UAV""]] call qrfs_module_fnc_getVehicles);\
+} forEach [east, west, resistance, civilian];\
+{\
+	_x params ['_cfg', '_label'];\
+	_x = _cfg;\
+	_lbadd = _control lbadd format [""%1 (%2)"", gettext (_x >> 'displayname'), _label];\
 	_control lbsetdata [_lbadd, configName _x];\
 	_control lbsetpicture [_lbadd,gettext (_x >> 'picture')];\
 	_dlcLogo = if (configsourcemod _x == '') then {''} else {modParams [configsourcemod  _x,['logo']] param [0,'']};\

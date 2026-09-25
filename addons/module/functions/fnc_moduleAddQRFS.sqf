@@ -19,6 +19,10 @@
     	private _dropoffDistance = _logic getVariable "dropoffDistance";
     	private _condition = _logic getVariable "condition";
     	private _triggerArea = _logic getVariable "objectarea";
+    	private _sideId = _logic getVariable ["side", 0];
+    	private _targetSideId = _logic getVariable ["targetSide", 1];
+    	private _side = SIDE_FROM_ID(_sideId);
+    	private _targetSide = SIDE_FROM_ID(_targetSideId);
     	_triggerTimeout = [(_triggerTimeout select 0), (_triggerTimeout select 1), (_triggerTimeout select 2), true];
 
     	if (_classnameOverride != "") then {
@@ -36,7 +40,7 @@
 				"%1 && [thisList, %2, %3] call %4;",
 				_condition,
 				_area,
-				east,
+				_side,
 				DFUNC(isSpotted)
 			];
 		};
@@ -59,8 +63,9 @@
     		_qrfTrigger setTriggerActivation ["GROUP", "PRESENT", true];
     		_notificationTrigger setTriggerActivation ["GROUP", "PRESENT", true];
     	} else {
-    		_qrfTrigger setTriggerActivation ["WEST", "PRESENT", true];
-    		_notificationTrigger setTriggerActivation ["WEST", "PRESENT", true];
+    		private _activation = SIDE_TRIGGER_NAME(_targetSide);
+    		_qrfTrigger setTriggerActivation [_activation, "PRESENT", true];
+    		_notificationTrigger setTriggerActivation [_activation, "PRESENT", true];
     	};
 
     	_qrfTrigger setTriggerArea _triggerArea;
@@ -78,13 +83,14 @@
     		_condition,
     		format [
     			"%1 ""A QRF has been called to your location."";
-    	[(thisList select 0), ""%2"", %3, ""%4"", %5, %6] call %7;",
+    	[(thisList select 0), ""%2"", %3, ""%4"", %5, %6, %7] call %8;",
     			_channel,
     			_classname,
     			_units,
     			_origin,
     			_spawnDistance,
     			_dropoffDistance,
+    			_side,
     			DFUNC(callInQRF)
     		],
     		""
@@ -95,37 +101,51 @@
     	*/
     } else {
     	if (!local _logic) exitWith {};
+    	private _sideLabels = ["OPFOR", "BLUFOR", "IND", "CIV"];
     	private _vehClasses = [];
-    	private _unitClasses = [];
+    	private _vehSides = [];
+    	private _unitClasses = [[], [], [], []];
     	private _numCargo = [];
         {
             if (getNumber (_x >> "scope") != 2) then {continue};
-            if (getNumber (_x >> "side") != 0) then {continue};
+            private _sideId = getNumber (_x >> "side");
+            if (_sideId < 0 || _sideId > 3) then {continue};
 
             private _class = configName _x;
 
             if (_class isKindOf "CAManBase") then {
-                _unitClasses pushBack _class;
+                (_unitClasses select _sideId) pushBack _class;
             };
             if (_class isKindOf "Helicopter" || _class isKindOf "Tank" || _class isKindOf "Car") then {
 				private _num = [_class] call FUNC(cargoSeats);
 				if (_num <= 0) then {continue};
 
                 _vehClasses pushBack _class;
+                _vehSides pushBack _sideId;
 				_numCargo pushBack _num;
             };
         } forEach configProperties [configFile >> "CfgVehicles","isClass _x"];
+
+        private _vehItems = [];
+        {
+            _vehItems pushBack [
+                format ["%1 (%2)", getText (configFile >> "CfgVehicles" >> _x >> "displayName"), _sideLabels select (_vehSides select _forEachIndex)],
+                _x
+            ];
+        } forEach _vehClasses;
 
     	[
     		"Add QRF",
     		[
 				[
 					"COMBOBOX",
+					"Side",
+					[_sideLabels apply { [_x] }, 0]
+				],
+				[
+					"COMBOBOX",
 					"Class Name",
-					[
-						_vehClasses apply { [getText (configFile >> "CfgVehicles" >> _x >> "displayName"), _x]},
-						_vehClasses find "O_Heli_Transport_04_bench_F"
-					]
+					[_vehItems, _vehClasses find "O_Heli_Transport_04_bench_F"]
 				],
 				["EDITBOX", "Vehicle Override", ""],
 				["EDITBOX", "Origin", "random"],
@@ -135,8 +155,9 @@
 			{
 				params ["_values", "_custom"];
 				_custom params ["_position", "_unitClasses", "_vehClasses", "_numCargo"];
-				_values params ["_classnameIndex", "_override", "_origin", "_spawnDistance", "_dropoffDistance"];
+				_values params ["_sideIndex", "_classnameIndex", "_override", "_origin", "_spawnDistance", "_dropoffDistance"];
 
+				private _side = SIDE_FROM_ID(_sideIndex);
 				private _classname = _vehClasses select _classnameIndex;
 				private _seats = _numCargo select _classnameIndex;
 				private _badOverride = false;
@@ -161,7 +182,7 @@
 							"CARGOBOX",
 							"Units",
 							[
-								_unitClasses apply { [getText (configFile >> "CfgVehicles" >> _x >> "displayName"), _x]},
+								(_unitClasses select _sideIndex) apply { [getText (configFile >> "CfgVehicles" >> _x >> "displayName"), _x]},
 								8,
 								_seats
 							]
@@ -169,13 +190,13 @@
 					],
 					{
 						params ["_values", "_custom"];
-						_custom params ["_position", "_classname", "_origin", "_spawnDistance", "_dropoffDistance"];
+						_custom params ["_position", "_classname", "_origin", "_spawnDistance", "_dropoffDistance", "_side"];
 						_values params ["_units"];
 
-						[_position, _classname, _units, _origin, _spawnDistance, _dropoffDistance] call DFUNC(callInQRF);
+						[_position, _classname, _units, _origin, _spawnDistance, _dropoffDistance, _side] call DFUNC(callInQRF);
 						ZEUS_MESSAGE("QRF Spawned");
 					},
-					[_position, _classname, _origin, _spawnDistance, _dropoffDistance]
+					[_position, _classname, _origin, _spawnDistance, _dropoffDistance, _side]
 				] call qrfs_sdf_fnc_dialog;
 			},
 			[_position, _unitClasses, _vehClasses, _numCargo]

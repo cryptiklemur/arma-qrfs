@@ -50,3 +50,6 @@
 #define ZEUS_MESSAGE(MESSAGE) [objNull,MESSAGE] call BIS_fnc_showCuratorFeedbackMessage
 
 #define GLOBAL_QRFS_ENABLED true
+
+#define SIDE_FROM_ID(ID) ([east, west, resistance, civilian] select (ID))
+#define SIDE_TRIGGER_NAME(SIDE) (["EAST", "WEST", "GUER", "CIV"] select ([east, west, resistance, civilian] find (SIDE)))

@@ -1,6 +1,6 @@
 #include "script_component.hpp"
 
-// Example [(thisList select 0), _classname, _units, _count, _origin, _distance, _dropoffDistance] execVM QFUNC(callInQRF);
+// Example [(thisList select 0), _classname, _units, _origin, _distance, _dropoffDistance, _side] call QFUNC(callInQRF);
 if (!isServer) exitWith {};
 private ["_dir", "_e1", "_vehSpots", "_man", "_type", "_special", "_land", "_waitUntil"];
 
@@ -10,6 +10,7 @@ private _units = param [2];
 private _origin = param [3];
 private _distance = param [4];
 private _dropoffDistance = param [5];
+private _side = param [6, east];
 private _grpSize = count _units;
 private _targetMarker = param [0];
 
@@ -20,8 +21,8 @@ if (typeName _origin == "STRING") then {
 };
 
 //Side related group creation:
-private _grp1 = createGroup east;
-private _grp2 = createGroup east;
+private _grp1 = createGroup _side;
+private _grp2 = createGroup _side;
 
 if (_classname isKindOf "Helicopter") then {
 	_type = "air";

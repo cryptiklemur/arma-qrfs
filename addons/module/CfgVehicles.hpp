@@ -47,10 +47,36 @@ class CfgVehicles {
 				tooltip = "Does someone inside the radius have to be spotted by the enemy before a QRF can be called in?";
 				defaultValue = "true";
 			};
+			class Side: Combo {
+				displayName = "QRF Side";
+				tooltip = "Which side the QRF vehicle and units belong to";
+				typeName = "NUMBER";
+				defaultValue = 0;
+
+				class values {
+					class OpFor { name = "OPFOR"; value = 0; default = 1; };
+					class BluFor { name = "BLUFOR"; value = 1; };
+					class Independent { name = "Independent"; value = 2; };
+					class Civilian { name = "Civilian"; value = 3; };
+				};
+			};
+			class TargetSide: Combo {
+				displayName = "Triggered By";
+				tooltip = "Which side has to enter the area to call the QRF in";
+				typeName = "NUMBER";
+				defaultValue = 1;
+
+				class values {
+					class OpFor { name = "OPFOR"; value = 0; };
+					class BluFor { name = "BLUFOR"; value = 1; default = 1; };
+					class Independent { name = "Independent"; value = 2; };
+					class Civilian { name = "Civilian"; value = 3; };
+				};
+			};
 			class Classname: Default {
 				control = QGVAR(OPForVehicleList);
 				displayName = "Vehicle";
-				tooltip = "What Vehicle is used to transport the QRF";
+				tooltip = "What Vehicle is used to transport the QRF. The list covers every side, pick one that matches QRF Side.";
 				defaultValue = """O_Heli_Transport_04_bench_F""";
 			};
 			class ClassnameOverride: Default {

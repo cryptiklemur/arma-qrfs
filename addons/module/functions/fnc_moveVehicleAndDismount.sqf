@@ -73,7 +73,7 @@ _this spawn {
 
 	waitUntil { sleep 5; _vehicle distance _pos <= 50 };
 
-	if (((_vehicle distance _targetPos) > 50)) then {
+	if (!isNil "REKA60padArray" && {(_vehicle distance _targetPos) > 50}) then {
 		REKA60padArray = REKA60padArray - [_targetPos];
 	};
 
